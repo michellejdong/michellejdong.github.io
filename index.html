@@ -342,6 +342,9 @@
   @keyframes quake { 10% { transform: translate(-2px, 1px); } 25% { transform: translate(3px, -1px); } 40% { transform: translate(-3px, 2px); } 55% { transform: translate(2px, -2px); } 70% { transform: translate(-4px, 1px) rotate(.15deg); } 85% { transform: translate(4px, 2px) rotate(-.2deg); } }
   .pour { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 70; pointer-events: none; transition: opacity 1s ease; }
   .pour.out { opacity: 0; }
+  .pour > path { transition: opacity 1s ease; }
+  .pour.drain > path { opacity: 0; }
+  .pour.slow { transition: opacity 1.6s ease; }
   .bloom { position: fixed; inset: 0; z-index: 70; pointer-events: none; background: radial-gradient(circle at 50% 50%, #93c086 0%, #5a8c54 55%); clip-path: circle(0% at 50% 50%);
            transition: clip-path 1.45s cubic-bezier(.65,0,.2,1), opacity .9s ease; }
   .bloom.go { clip-path: circle(150% at 50% 50%); }
@@ -352,7 +355,8 @@
   .secret .blank { text-align: center; }
   body { transition: background-color 1.4s ease; }
   body.green { --bg: #5a8c54; --dim: #dcebd4; --t1: #52814d; --t2: #4d7a48; --t3: rgba(66,106,62,.96); --t4: rgba(58,94,54,.88); --t5: #3c6238; }
-  body.blue { --bg: #8acad9; --fg: #003262; --dim: #1f4f82; --t1: #97d2df; --t2: #06305c; --t3: rgba(0,40,82,.97); --t4: rgba(255,255,255,.6); --t5: #003262; }
+  body.blue { --bg: #8acad9; --fg: #003262; --dim: #1f4f82; --t1: #97d2df; --t4: rgba(255,255,255,.6); --t5: #003262; --ir: 0,50,98; --i2: #0c3a6c; --i3: #2a5a8a; --i4: #1f4f82; }
+  body.boba { --bg: #d6b690; --fg: #3b2414; --dim: #6a4a34; --t1: #e0c6a6; --t4: rgba(255,255,255,.55); --t5: #3b2414; --ir: 59,36,20; --i2: #4b2f1c; --i3: #7b5b43; --i4: #6a4a34; }
   body.themed { --line: rgba(255,255,255,.26); }
   body.themed .cause, body.themed .svpanel:not(:empty) { background: var(--t1); }
   body.themed .cursor, body.themed .ring, body.themed header { mix-blend-mode: normal; }
@@ -366,47 +370,47 @@
   body.themed ::selection { background: #fff; color: var(--t2); }
 
   /* ---------- light blue: a pale page with dark ink; the game, web and map stay as dark windows ---------- */
-  body.blue { --line: rgba(0,50,98,.2); }
-  body.blue .ct, body.blue .about p + p, body.blue .edg, body.blue .row p, body.blue .gline, body.blue .lead, body.blue .tag, body.blue .body, body.blue .mad,
-  body.blue .gstatus, body.blue .gread, body.blue .tnote, body.blue .inner p { color: #0c3a6c; }
-  body.blue .thint, body.blue footer, body.blue #pnote { color: #2a5a8a; }
-  body.blue .body b, body.blue .body strong, body.blue .gline b { color: var(--fg); }
-  body.blue .gline b { border-bottom-color: var(--fg); }
-  body.blue h1 { text-shadow: none; }
-  body.blue .hero h1::after { background: linear-gradient(90deg, transparent, var(--fg), transparent); }
-  body.blue .row h3, body.blue .pn b { -webkit-text-stroke-color: var(--fg); }
-  body.blue:not(.editing) .row:hover h3, body.blue .pn:hover b { color: var(--fg); }
-  body.blue .row::before, body.blue .progress { background: var(--fg); }
-  body.blue .cause { background: var(--t1); }
-  body.blue .cause::before { background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.75), transparent 65%); }
-  body.blue .cause:hover .ct, body.blue .cause:hover .cn, body.blue .svc:hover .svgo, body.blue .svc.sel .svgo, body.blue .svc.sel .cn { color: var(--fg); }
-  body.blue .svc.sel { box-shadow: inset 0 0 0 1.5px var(--fg); }
-  body.blue .svpanel:not(:empty) { background: rgba(255,255,255,.45); border-color: rgba(0,50,98,.25); }
-  body.blue .cause .like { background: rgba(255,255,255,.55); border-color: rgba(0,50,98,.3); color: var(--dim); }
-  body.blue .cause .like:hover { color: var(--fg); border-color: var(--fg); }
-  body.blue .cause .like.on, body.blue .chip.on, body.blue .lab .mini.on, body.blue .tgo { background: var(--fg); color: #fff; border-color: var(--fg); }
-  body.blue .tgo:hover { background: transparent; color: var(--fg); }
-  body.blue .mini, body.blue #mapbtn { color: var(--fg); border-color: rgba(0,50,98,.3); }
-  body.blue .mini:hover, body.blue #mapbtn:hover { background: var(--fg); color: #fff; border-color: var(--fg); }
-  body.blue .tin, body.blue .chip, body.blue .blank { color: var(--fg); }
-  body.blue .tin, body.blue .chip { background: rgba(255,255,255,.55); border-color: rgba(0,50,98,.3); }
-  body.blue .tin:focus, body.blue .blank:focus, body.blue .chip:hover { border-color: var(--fg); }
-  body.blue .blank { border-bottom-color: rgba(0,50,98,.5); }
-  body.blue ::placeholder { color: rgba(0,50,98,.45); }
-  body.blue .tags li { color: var(--fg); border-color: rgba(0,50,98,.3); }
-  body.blue .tags li:hover { background: var(--fg); color: #fff; }
-  body.blue .body a, body.blue .about a { border-bottom-color: var(--fg); }
-  body.blue .links a::after { background: var(--fg); }
-  body.blue .tprog i { border-color: rgba(0,50,98,.45); } body.blue .tprog i:not(:last-child)::after { background: rgba(0,50,98,.3); }
-  body.blue .tprog i.done { background: var(--fg); border-color: var(--fg); } body.blue .tprog i.now { border-color: var(--fg); box-shadow: 0 0 0 5px rgba(0,50,98,.12); }
-  body.blue .cursor { background: var(--fg); } body.blue .cursor.big { background: rgba(0,50,98,.16); } body.blue .ring { border-color: rgba(0,50,98,.5); }
-  body.blue .mword i { color: #fff; }
-  body.blue .toast { background: var(--fg); color: #fff; }
-  body.blue ::selection { background: var(--fg); color: #fff; }
-  body.blue::after { mix-blend-mode: multiply; opacity: .05; }
+  body.light { --line: rgba(var(--ir),.2); }
+  body.light .ct, body.light .about p + p, body.light .edg, body.light .row p, body.light .gline, body.light .lead, body.light .tag, body.light .body, body.light .mad,
+  body.light .gstatus, body.light .gread, body.light .tnote, body.light .inner p { color: var(--i2); }
+  body.light .thint, body.light footer, body.light #pnote { color: var(--i3); }
+  body.light .body b, body.light .body strong, body.light .gline b { color: var(--fg); }
+  body.light .gline b { border-bottom-color: var(--fg); }
+  body.light h1 { text-shadow: none; }
+  body.light .hero h1::after { background: linear-gradient(90deg, transparent, var(--fg), transparent); }
+  body.light .row h3, body.light .pn b { -webkit-text-stroke-color: var(--fg); }
+  body.light:not(.editing) .row:hover h3, body.light .pn:hover b { color: var(--fg); }
+  body.light .row::before, body.light .progress { background: var(--fg); }
+  body.light .cause { background: var(--t1); }
+  body.light .cause::before { background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.75), transparent 65%); }
+  body.light .cause:hover .ct, body.light .cause:hover .cn, body.light .svc:hover .svgo, body.light .svc.sel .svgo, body.light .svc.sel .cn { color: var(--fg); }
+  body.light .svc.sel { box-shadow: inset 0 0 0 1.5px var(--fg); }
+  body.light .svpanel:not(:empty) { background: rgba(255,255,255,.45); border-color: rgba(var(--ir),.25); }
+  body.light .cause .like { background: rgba(255,255,255,.55); border-color: rgba(var(--ir),.3); color: var(--dim); }
+  body.light .cause .like:hover { color: var(--fg); border-color: var(--fg); }
+  body.light .cause .like.on, body.light .chip.on, body.light .lab .mini.on, body.light .tgo { background: var(--fg); color: #fff; border-color: var(--fg); }
+  body.light .tgo:hover { background: transparent; color: var(--fg); }
+  body.light .mini, body.light #mapbtn { color: var(--fg); border-color: rgba(var(--ir),.3); }
+  body.light .mini:hover, body.light #mapbtn:hover { background: var(--fg); color: #fff; border-color: var(--fg); }
+  body.light .tin, body.light .chip, body.light .blank { color: var(--fg); }
+  body.light .tin, body.light .chip { background: rgba(255,255,255,.55); border-color: rgba(var(--ir),.3); }
+  body.light .tin:focus, body.light .blank:focus, body.light .chip:hover { border-color: var(--fg); }
+  body.light .blank { border-bottom-color: rgba(var(--ir),.5); }
+  body.light ::placeholder { color: rgba(var(--ir),.45); }
+  body.light .tags li { color: var(--fg); border-color: rgba(var(--ir),.3); }
+  body.light .tags li:hover { background: var(--fg); color: #fff; }
+  body.light .body a, body.light .about a { border-bottom-color: var(--fg); }
+  body.light .links a::after { background: var(--fg); }
+  body.light .tprog i { border-color: rgba(var(--ir),.45); } body.light .tprog i:not(:last-child)::after { background: rgba(var(--ir),.3); }
+  body.light .tprog i.done { background: var(--fg); border-color: var(--fg); } body.light .tprog i.now { border-color: var(--fg); box-shadow: 0 0 0 5px rgba(var(--ir),.12); }
+  body.light .cursor { background: var(--fg); } body.light .cursor.big { background: rgba(var(--ir),.16); } body.light .ring { border-color: rgba(var(--ir),.5); }
+  body.light .mword i { color: #fff; }
+  body.light .toast { background: var(--fg); color: #fff; }
+  body.light ::selection { background: var(--fg); color: #fff; }
+  body.light::after { mix-blend-mode: multiply; opacity: .05; }
   body.themed #map .gstatus, body.themed #map .gread, body.themed #map .themes span { color: #c9c9c5; } body.themed #map .thint { color: #777; } body.themed #map #mapmis b { color: #fff; }
   body.themed #map .mini { color: #ddd; background: #111; border-color: #3a3a3a; } body.themed #map .mini:hover, body.themed #map .mini.on { background: #fff; color: #000; border-color: #fff; }
-  body.blue .game .gread, body.blue .lab .gread, body.blue .webwrap .gread { color: #1f4f82; }
+  body.light .game .gread, body.light .lab .gread, body.light .webwrap .gread { color: var(--i4); }
 
   /* ---------- extra polish ---------- */
   body::after { content: ""; position: fixed; inset: 0; z-index: 5; pointer-events: none; opacity: .035; mix-blend-mode: screen;
@@ -3175,22 +3179,22 @@ var DEFAULT = {
   }
 
   /* ---------- a secret for guests who have lit ten stars: "I like drinking _ _." ---------- */
-  var secretRefresh = null, theme = 'black', foundMatcha = false, INK = '255,255,255';
-  try { foundMatcha = localStorage.getItem('site-matcha-found') === '1' || localStorage.getItem('site-matcha') === '1';
+  var secretRefresh = null, theme = 'black', foundMatcha = false, foundBoba = false, INK = '255,255,255';
+  try { foundBoba = localStorage.getItem('site-boba-found') === '1'; foundMatcha = localStorage.getItem('site-matcha-found') === '1' || localStorage.getItem('site-matcha') === '1';
         theme = localStorage.getItem('site-theme') || (localStorage.getItem('site-matcha') === '1' ? 'green' : 'black'); } catch (e) {}
-  function setTheme(name) { theme = name; INK = name === 'blue' ? '0,50,98' : '255,255,255'; var c = document.body.classList; c.remove('green', 'blue', 'themed'); if (name !== 'black') c.add(name, 'themed');
-    try { localStorage.setItem('site-theme', name); localStorage.removeItem('site-matcha'); if (foundMatcha) localStorage.setItem('site-matcha-found', '1'); } catch (e) {} }
-  if (theme !== 'black') document.body.classList.add(theme, 'themed');
-  if (theme === 'blue') INK = '0,50,98';
+  var INKS = { blue: '0,50,98', boba: '59,36,20' };
+  function setTheme(name) { theme = name; INK = INKS[name] || '255,255,255'; var c = document.body.classList; c.remove('green', 'blue', 'boba', 'themed', 'light'); if (name !== 'black') c.add(name, 'themed'); if (INKS[name]) c.add('light');
+    try { localStorage.setItem('site-theme', name); localStorage.removeItem('site-matcha'); if (foundMatcha) localStorage.setItem('site-matcha-found', '1'); if (foundBoba) localStorage.setItem('site-boba-found', '1'); } catch (e) {} }
+  if (theme !== 'black') setTheme(theme);
   function themeButtons(redraw) {          /* colours a guest has earned: green for the secret, blue for completing the map */
-    var list = [['black', 'Black']]; if (foundMatcha) list.push(['green', 'Matcha green']); if (celebrated) list.push(['blue', 'Sky blue']);
+    var list = [['black', 'Black']]; if (foundMatcha) list.push(['green', 'Matcha green']); if (foundBoba) list.push(['boba', 'Boba tea']); if (celebrated) list.push(['blue', 'Sky blue']);
     if (list.length < 2) return null;
     var box = el('div', 'themes', [el('span', '', ['Colour'])]);
     list.forEach(function (t) { var b = el('button', 'mini' + (theme === t[0] ? ' on' : ''), [t[1]]); b.type = 'button';
       b.addEventListener('click', function () {
         var mark = function () { [].forEach.call(box.querySelectorAll('button'), function (x) { x.classList.toggle('on', x === b); }); if (redraw) redraw(); };
         if (t[0] === 'blue' && theme !== 'blue' && !busy) { closeMap(); mark(); supernova(function () { if (secretRefresh && document.querySelector('.secret')) secretRefresh(); }); return; }   /* going to sky blue always replays the supernova */
-        if (t[0] === 'green' && theme !== 'green' && !busy) { closeMap(); mark(); crumble(function () {}); return; }                 /* and going to matcha green replays the pour */
+        if ((t[0] === 'green' || t[0] === 'boba') && theme !== t[0] && !busy) { closeMap(); mark(); crumble(function () {}, t[0]); return; }                 /* and going to matcha green replays the pour */
         setTheme(t[0]); mark(); }); box.appendChild(b); });
     return box;
   }
@@ -3230,14 +3234,36 @@ var DEFAULT = {
   }
 
   /* Matcha latte is poured from the top of the screen, pools at the bottom, and rises until it covers everything. */
-  function pourOver(delay) {
+  function pourOver(delay, kind) {
+    var C = kind === 'boba' ? { stream: '#c7a279', shine: '#f1e2cd', liquid: '#d6b690', foam: '#f6ebdb', swirl: '#ecdcc4', dot: '#2c1a10', dotA: .88, n: 0, r0: 7, r1: 6, pearls: 64 }
+                           : { stream: '#6c9d63', shine: '#cfe6c0', liquid: '#5a8c54', foam: '#e6f2d9', swirl: '#dcedcc', dot: '#e6f2d9', dotA: .28, n: 16, r0: 3, r1: 8 };
     var NS = 'http://www.w3.org/2000/svg', vw = innerWidth, vh = innerHeight, svg = document.createElementNS(NS, 'svg'), t0 = 0, bubbles = [], k;
     function sv(tag, attrs) { var e = document.createElementNS(NS, tag); for (var a in attrs) e.setAttribute(a, attrs[a]); svg.appendChild(e); return e; }
     svg.setAttribute('class', 'pour'); svg.setAttribute('viewBox', '0 0 ' + vw + ' ' + vh); svg.setAttribute('preserveAspectRatio', 'none');
-    var stream = sv('path', { fill: '#6c9d63' }), shine = sv('path', { fill: 'none', stroke: '#cfe6c0', 'stroke-width': 3, 'stroke-linecap': 'round', opacity: .7 });
-    var liquid = sv('path', { fill: '#5a8c54' }), foam = sv('path', { fill: 'none', stroke: '#e6f2d9', 'stroke-width': 11, 'stroke-linecap': 'round', opacity: .92 }),
-        swirl = sv('path', { fill: 'none', stroke: '#dcedcc', 'stroke-width': 5, 'stroke-linecap': 'round', opacity: .5 });
-    for (k = 0; k < 16; k++) bubbles.push({ el: sv('circle', { fill: '#e6f2d9', opacity: .28 + Math.random() * .3, r: 3 + Math.random() * 8 }), x: Math.random() * vw, d: 30 + Math.random() * 260, ph: Math.random() * 6 });
+    var stream = sv('path', { fill: C.stream }), shine = sv('path', { fill: 'none', stroke: C.shine, 'stroke-width': 3, 'stroke-linecap': 'round', opacity: .7 });
+    var liquid = sv('path', { fill: C.liquid }), foam = sv('path', { fill: 'none', stroke: C.foam, 'stroke-width': 11, 'stroke-linecap': 'round', opacity: .92 }),
+        swirl = sv('path', { fill: 'none', stroke: C.swirl, 'stroke-width': 5, 'stroke-linecap': 'round', opacity: .5 });
+    for (k = 0; k < C.n; k++) bubbles.push({ el: sv('circle', { fill: C.dot, opacity: C.dotA + Math.random() * .1, r: C.r0 + Math.random() * C.r1 }),   /* cream bubbles, or tapioca pearls */ x: Math.random() * vw, d: 30 + Math.random() * 260, ph: Math.random() * 6 });
+    /* boba: tapioca pearls drop in from above, plop through the surface, and are pulled down to settle in a layer at the bottom of the cup */
+    var pearls = [], last = 0;
+    function mk(tag, attrs, into) { var e = document.createElementNS(NS, tag); for (var q in attrs) e.setAttribute(q, attrs[q]); into.appendChild(e); return e; }
+    if (C.pearls) {                                                     /* shading for a round, glossy, slightly translucent pearl */
+      var defs = mk('defs', {}, svg), g1 = mk('radialGradient', { id: 'pearlBody', cx: '38%', cy: '32%', r: '72%' }, defs), g2 = mk('radialGradient', { id: 'pearlGlow', cx: '66%', cy: '74%', r: '46%' }, defs),
+          g3 = mk('radialGradient', { id: 'pearlShade', cx: '50%', cy: '50%', r: '50%' }, defs);
+      [[0, '#8a5733'], [.28, '#4d2b18'], [.62, '#27140b'], [1, '#0d0603']].forEach(function (c) { mk('stop', { offset: c[0], 'stop-color': c[1] }, g1); });
+      [[0, 'rgba(214,150,92,.6)'], [1, 'rgba(214,150,92,0)']].forEach(function (c) { mk('stop', { offset: c[0], 'stop-color': c[1] }, g2); });      /* caramel light coming through the far side */
+      [[0, 'rgba(60,34,18,.42)'], [1, 'rgba(60,34,18,0)']].forEach(function (c) { mk('stop', { offset: c[0], 'stop-color': c[1] }, g3); });
+    }
+    var order = []; for (k = 0; k < (C.pearls || 0); k++) order.push(.55 + Math.random() * .65); order.sort();      /* far pearls first, near pearls drawn on top */
+    for (k = 0; k < order.length; k++) { var first = Math.random() < .3, z = order[k], pr = (9 + Math.random() * 5) * z, g = mk('g', { opacity: 0 }, svg);
+      var sh = mk('ellipse', { cx: 0, cy: pr * .92, rx: pr * 1.25, ry: pr * .34, fill: 'url(#pearlShade)', opacity: 0 }, g);
+      mk('circle', { r: pr, fill: 'url(#pearlBody)' }, g); mk('circle', { r: pr, fill: 'url(#pearlGlow)' }, g);
+      mk('ellipse', { cx: -pr * .34, cy: -pr * .42, rx: pr * .3, ry: pr * .17, fill: '#fff', opacity: .62, transform: 'rotate(-32 ' + (-pr * .34) + ' ' + (-pr * .42) + ')' }, g);
+      mk('circle', { cx: -pr * .08, cy: -pr * .62, r: pr * .07, fill: '#fff', opacity: .5 }, g); mk('circle', { r: pr - .5, fill: 'none', stroke: 'rgba(255,225,190,.16)', 'stroke-width': 1 }, g);
+      pearls.push({ el: g, sh: sh, r: pr, z: z, sq: 0,
+        x: first ? Math.random() * vw : vw / 2 + (Math.random() - .5) * (Math.random() < .45 ? 120 : vw * .95), y: -30 - Math.random() * 60,
+        vx: (Math.random() - .5) * 60, vy: 200 + Math.random() * 300, at: first ? Math.random() * .45 : .35 + Math.random() * 1.75,
+        floor: vh - pr - (1.2 - z) * 90 - Math.random() * 14, wet: false, ph: Math.random() * 6 }); }
     document.body.appendChild(svg);
     function ease(x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
     function frame(now) {
@@ -3252,14 +3278,32 @@ var DEFAULT = {
         ' L' + (cx + w * .62) + ',' + bottom + ' C' + (cx + w / 2 - 5) + ',' + bottom * .7 + ' ' + (cx + w / 2 + 6) + ',' + bottom * .4 + ' ' + (cx + w / 2) + ',-10 Z' : '');
       shine.setAttribute('d', w > .5 ? 'M' + (cx - w * .18) + ',0 L' + (cx - w * .2) + ',' + bottom * .92 : '');
       bubbles.forEach(function (b) { b.el.setAttribute('cx', b.x + Math.sin(t * 2 + b.ph) * 10); b.el.setAttribute('cy', y(b.x) + b.d - rise * 20); });
+      var dt = Math.min(.04, last ? (now - last) / 1000 : .016); last = now;
+      pearls.forEach(function (p) {
+        if (t < p.at) return;
+        var surf = y(p.x), under = !svg.drained && p.y > surf + p.r * .4, hit = 0;
+        if (svg.drained && !p.hop) p.hop = t + Math.random() * .7;
+        if (p.hop && p.hop !== -1 && t > p.hop) { p.hop = -1; if (p.floor - p.y < 4) { p.vy = -(300 + Math.random() * 300); p.vx = (Math.random() - .5) * 90; } }   /* once the tea has gone, each pearl hops */
+        if (under && !p.wet) { p.wet = true; p.vy *= .32; p.vx *= .4; p.sq = .22; }      /* the plop: the tea takes most of its speed */
+        if (under) { p.vy += ((150 + p.r * 9) * p.z - p.vy) * Math.min(1, dt * 3.2); p.vx += (Math.sin(t * 2.4 + p.ph) * 26 - p.vx) * Math.min(1, dt * 2); }   /* then a slow, steady pull downward */
+        else { p.vy += 2300 * dt; }                                                    /* free fall in the air */
+        p.y += p.vy * dt; p.x += p.vx * dt;
+        if (p.y > p.floor) { p.y = p.floor; hit = Math.min(.34, Math.abs(p.vy) / 2600); if (!under && p.vy > 110) { p.vy = -p.vy * .48; p.vx *= .7; } else if (under && p.vy > 60) { p.vy = -p.vy * .5; } else { p.vy = 0; p.vx *= .8; } if (hit > p.sq) p.sq = hit; }   /* soft tapioca squashes as it lands */
+        p.sq *= Math.pow(.004, dt);
+        var stretch = under ? 0 : Math.min(.12, Math.abs(p.vy) / 9000), sx = 1 + p.sq - stretch, sy = 1 - p.sq + stretch, rest = p.floor - p.y < p.r * 2 ? 1 - (p.floor - p.y) / (p.r * 2) : 0;
+        p.el.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ',' + (p.y + p.r * p.sq).toFixed(1) + ') scale(' + sx.toFixed(3) + ',' + sy.toFixed(3) + ')');
+        p.el.setAttribute('opacity', under ? (.62 + p.z * .32).toFixed(2) : 1);        /* pearls deeper in the milk tea look paler */
+        p.sh.setAttribute('opacity', (rest * (under ? .9 : .5)).toFixed(2));
+      });
     }
     setTimeout(function () { requestAnimationFrame(frame); }, delay || 0);
     return svg;
   }
 
-  function crumble(after) {
-    if (still) { foundMatcha = true; setTheme('green'); if (secretRefresh) secretRefresh(); after(); return; }
-    var body = document.body, vh = innerHeight, vw = innerWidth, bloom = pourOver(2300); body.classList.add('crumbling');
+  function crumble(after, kind) {
+    kind = kind || 'green'; function arrive() { if (kind === 'boba') foundBoba = true; else foundMatcha = true; setTheme(kind); }
+    if (still) { arrive(); if (secretRefresh) secretRefresh(); after(); return; }
+    var body = document.body, vh = innerHeight, vw = innerWidth, bloom = pourOver(2300, kind); body.classList.add('crumbling');
     var parts = partsInView(); busy = true;
     setTimeout(function () {                                           /* after a short tremor, everything lets go */
       falling = true;
@@ -3273,13 +3317,16 @@ var DEFAULT = {
       });
     }, 650);
     setTimeout(function () {                                           /* behind it, the world is rebuilt */
-      foundMatcha = true; setTheme('green'); falling = false; size();
+      body.style.transition = 'none'; arrive(); void body.offsetWidth; setTimeout(function () { body.style.transition = ''; }, 80); falling = false; size();   /* the new colour is already there under the liquid, so nothing darkens as it clears */
       resetChrome();
       if (location.hash && !pageId) history.replaceState(null, '', location.pathname + location.search);
       introDone = false; scrollTo({ top: 0, behavior: 'instant' }); render(true);
-      body.classList.remove('crumbling'); bloom.classList.add('out');
+      body.classList.remove('crumbling');
+      if (kind === 'boba') { bloom.drained = true; bloom.classList.add('drain', 'slow'); setTimeout(function () { bloom.classList.add('out'); }, 2100); }   /* the tea clears first; the pearls stay, bounce a little, and then slowly fade */
+      else bloom.classList.add('out');
       [0, 300, 600].forEach(function (d) { setTimeout(function () { waves.push({ x: W / 2, y: H / 2, r: 0 }); }, d); });
-      setTimeout(function () { bloom.remove(); busy = false; after(); }, 1300);
+      setTimeout(function () { if (kind !== 'boba') bloom.remove(); busy = false; after(); }, 1300);
+      if (kind === 'boba') setTimeout(function () { bloom.remove(); }, 3900);
     }, 4750);
   }
 
@@ -3289,19 +3336,22 @@ var DEFAULT = {
     function draw() {
       box.innerHTML = ''; box.style.display = tally().n >= 10 ? '' : 'none'; if (tally().n < 10) return;
       box.appendChild(el('div', 'thead', [el('span', '', ['A secret, for those who have lit ten stars'])]));
-      if (foundMatcha) { box.appendChild(el('p', 'mad', ['I like drinking matcha latte. You know me well.']));
-        var tb = themeButtons(); if (tb) { tb.style.justifyContent = 'flex-start'; tb.style.marginTop = '20px'; box.appendChild(tb); } return; }
-      var a = el('input', 'blank'), b = el('input', 'blank'), note = el('span', 'tnote'); note.setAttribute('role', 'status');
-      [a, b].forEach(function (i, k) { i.type = 'text'; i.size = 8; i.maxLength = 20; i.setAttribute('aria-label', k ? 'Second word' : 'First word'); i.autocomplete = 'off';
-        i.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); go(); } if (ev.key === ' ' && !k) { ev.preventDefault(); b.focus(); } }); });
-      function go() {
-        var v = (a.value + ' ' + b.value).toLowerCase().replace(/[^a-z]+/g, ' ').trim();
-        if (v === 'matcha latte') { track('act', 'found the matcha latte'); a.blur(); b.blur();
-          crumble(function () { toast('Matcha latte it is, ' + guestName() + '.'); }); }
-        else note.textContent = v ? 'Not quite my cup. A hint: put your cursor on the M and the L of my page titles.' : 'Two words.';
+      if (foundMatcha) box.appendChild(el('p', 'mad', ['I like drinking matcha latte. You know me well.']));
+      if (foundBoba) box.appendChild(el('p', 'mad', ['I like drinking boba tea. I wasn’t expecting this, but it is also true.']));
+      if (!(foundMatcha && foundBoba)) {
+        var a = el('input', 'blank'), b = el('input', 'blank'), note = el('span', 'tnote'); note.setAttribute('role', 'status');
+        [a, b].forEach(function (i, k) { i.type = 'text'; i.size = 8; i.maxLength = 20; i.setAttribute('aria-label', k ? 'Second word' : 'First word'); i.autocomplete = 'off';
+          i.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); go(); } if (ev.key === ' ' && !k) { ev.preventDefault(); b.focus(); } }); });
+        var go = function () {
+          var v = (a.value + ' ' + b.value).toLowerCase().replace(/[^a-z]+/g, ' ').trim();
+          if (v === 'matcha latte' && !foundMatcha) { track('act', 'found the matcha latte'); a.blur(); b.blur(); crumble(function () { toast('Matcha latte it is, ' + guestName() + '.'); }, 'green'); }
+          else if ((v === 'boba tea' || v === 'bubble tea') && !foundBoba) { track('act', 'found the boba tea'); a.blur(); b.blur(); crumble(function () { toast('I wasn’t expecting this, but it is also true.'); }, 'boba'); }
+          else note.textContent = !v ? 'Two words.' : (v === 'matcha latte' || v === 'boba tea' || v === 'bubble tea') ? 'You found that one already. Is there another?' : 'Not quite my cup. A hint: put your cursor on the M and the L of my page titles.';
+        };
+        box.appendChild(el('p', 'mad', [foundMatcha || foundBoba ? 'I also like drinking ' : 'I like drinking ', a, ' ', b, '.']));
+        box.appendChild(el('div', 'tnav', [btn('That is it', go), note]));
       }
-      box.appendChild(el('p', 'mad', ['I like drinking ', a, ' ', b, '.']));
-      box.appendChild(el('div', 'tnav', [btn('That is it', go), note]));
+      var tb = themeButtons(); if (tb) { tb.style.justifyContent = 'flex-start'; tb.style.marginTop = '20px'; box.appendChild(tb); }
     }
     secretRefresh = draw; draw(); return box;
   }
@@ -3450,8 +3500,8 @@ var DEFAULT = {
   $('mapbtn').addEventListener('click', openMap); $('mapclose').addEventListener('click', closeMap);
   $('mapreset').addEventListener('click', function () {            /* forget this guest's name, stars, missions, level and colours */
     if (!confirm('Start over? This clears your name, your stars, your missions and your colours on this device.')) return;
-    try { ['site-guest', 'site-guest-asked', 'site-visited', 'site-theme', 'site-matcha-found', 'site-matcha'].forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {}
-    guest = null; guestAsked = false; visited = {}; markedNow = {}; celebrated = false; foundMatcha = false; lastRank = -1; FORM.name = ''; SV.name = '';
+    try { ['site-guest', 'site-guest-asked', 'site-visited', 'site-theme', 'site-matcha-found', 'site-boba-found', 'site-matcha'].forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {}
+    guest = null; guestAsked = false; visited = {}; markedNow = {}; celebrated = false; foundMatcha = false; foundBoba = false; lastRank = -1; FORM.name = ''; SV.name = '';
     setTheme('black'); closeMap(); track('act', 'started over');
     if (location.hash) history.replaceState(null, '', location.pathname + location.search); pageId = null;
     scrollTo({ top: 0, behavior: 'instant' }); render(true); toast('A fresh start. Welcome, guest.');
